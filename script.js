@@ -28,7 +28,6 @@
         }
     }
 
-    MorphSVGPlugin.convertToPath("polygon");
     document.querySelector(".pContainer");
     var u = document.querySelector(".mainSVG");
     document.querySelector("#star");
@@ -93,14 +92,16 @@
             }, "-=0")
             .from(".treeBottomMask", {
                 duration: 2,
-                drawSVG: "0% 0%",
+                strokeDasharray: "0 100",
+                strokeDashoffset: "100",
                 stroke: "#FFF",
                 ease: "linear"
             }, "-=2");
     })();
 
     c.from([".treePathMask", ".treePotMask"], {
-        drawSVG: "0% 0%",
+        strokeDasharray: "0 100",
+        strokeDashoffset: "100",
         stroke: "#FFF",
         stagger: { each: 6 },
         duration: gsap.utils.wrap([6, 1, 2]),
