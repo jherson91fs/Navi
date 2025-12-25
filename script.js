@@ -7,21 +7,33 @@
     function t(a) {
         if (e) {
             a = l[d];
-            gsap.set(a, { x: gsap.getProperty(".pContainer", "x"), y: gsap.getProperty(".pContainer", "y"), scale: m() });
+            var startX = gsap.getProperty(".pContainer", "x");
+            var startY = gsap.getProperty(".pContainer", "y");
+            gsap.set(a, { x: startX, y: startY, scale: m() });
+
+            var duration = gsap.utils.random(.61, 6);
+            var velocity = gsap.utils.random(-23, 23);
+            var angle = gsap.utils.random(-180, 180);
+            var gravity = gsap.utils.random(-6, 50);
+            var rad = angle * Math.PI / 180;
+            var vx = velocity * Math.cos(rad);
+            var vy = velocity * Math.sin(rad);
+
             gsap.timeline().to(a, {
-                duration: gsap.utils.random(.61, 6),
-                physics2D: {
-                    velocity: gsap.utils.random(-23, 23),
-                    angle: gsap.utils.random(-180, 180),
-                    gravity: gsap.utils.random(-6, 50)
-                },
+                duration: duration,
                 scale: 0,
                 rotation: gsap.utils.random(-123, 360),
                 ease: "power1",
                 onStart: r,
                 onStartParams: [a],
                 onRepeat: function (b) { gsap.set(b, { scale: m() }) },
-                onRepeatParams: [a]
+                onRepeatParams: [a],
+                onUpdate: function () {
+                    var time = this.time();
+                    var x = startX + vx * time;
+                    var y = startY + vy * time + 0.5 * gravity * time * time;
+                    gsap.set(a, { x: x, y: y });
+                }
             });
             d++;
             d = 201 <= d ? 0 : d;
